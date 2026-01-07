@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Brasil Predict | Ao Vivo</title>
+<title>Brasil Predict | Odds Ao Vivo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -10,7 +10,7 @@
 
 body {
   margin:0;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family:"Segoe UI", Arial, sans-serif;
   background:#0b1220;
   color:#e5e7eb;
 }
@@ -25,19 +25,20 @@ header {
 
 .app { display:flex; }
 
-/* SIDEBAR */
 aside {
   width:220px;
   background:#020617;
   border-right:1px solid #1e293b;
   min-height:100vh;
 }
+
 aside h4 {
   padding:14px;
   margin:0;
   font-size:13px;
   color:#9ca3af;
 }
+
 aside button {
   width:100%;
   padding:12px 16px;
@@ -47,10 +48,16 @@ aside button {
   text-align:left;
   font-size:14px;
 }
-aside button.active { color:#38bdf8; }
 
-/* MAIN */
-main { flex:1; padding:16px; }
+aside button.active {
+  color:#22c55e;
+  font-weight:600;
+}
+
+main {
+  flex:1;
+  padding:16px;
+}
 
 .topbar {
   display:flex;
@@ -66,7 +73,7 @@ main { flex:1; padding:16px; }
   border:1px solid #1e293b;
 }
 
-.market {
+.match {
   background:#020617;
   border:1px solid #1e293b;
   border-radius:14px;
@@ -74,23 +81,32 @@ main { flex:1; padding:16px; }
   margin-bottom:16px;
 }
 
-.market h3 {
-  margin:0 0 12px 0;
+.teams {
+  display:flex;
+  justify-content:space-between;
   font-size:15px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.score {
+  font-size:18px;
 }
 
 .odds {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
+  gap:10px;
+  margin-bottom:12px;
 }
 
 .odd {
   padding:12px;
-  border-radius:12px;
+  border-radius:10px;
   text-align:center;
   border:1px solid #1e293b;
 }
+
 .yes { background:#1d4ed8; }
 .no { background:#7c2d12; }
 
@@ -99,157 +115,120 @@ main { flex:1; padding:16px; }
   font-weight:bold;
 }
 
-.odd small {
-  display:block;
-  font-size:11px;
-  margin-top:4px;
-}
-
 .odd button {
-  margin-top:8px;
   width:100%;
+  margin-top:6px;
   padding:8px;
   border:none;
-  border-radius:10px;
+  border-radius:8px;
   font-size:13px;
   font-weight:600;
 }
 
-.history {
+canvas {
   background:#020617;
+  border-radius:10px;
   border:1px solid #1e293b;
-  border-radius:14px;
-  padding:14px;
-  font-size:13px;
-}
-
-footer {
-  text-align:center;
-  padding:20px;
-  font-size:12px;
-  color:#9ca3af;
 }
 </style>
 </head>
 
 <body>
 
-<header>📊 Brasil Predict — Mercados Ao Vivo</header>
+<header>📈 Odds Ao Vivo — Brasil Predict</header>
 
 <div class="app">
 
 <aside>
-  <h4>Mercados</h4>
-  <button class="active">⚽ Esportes</button>
-  <button>📈 Economia</button>
-  <button>🏛️ Política</button>
+  <h4>Navegação</h4>
+  <button class="active">📈 Odds Ao Vivo</button>
+  <button>🔴 Ao Vivo</button>
+  <button>⚽ Esportes</button>
 </aside>
 
 <main>
 
 <div class="topbar">
   <div class="balance">Saldo: <strong id="saldo">1000</strong> pts</div>
-  <div>Usuário: Demo</div>
+  <div>Flamengo x Palmeiras</div>
 </div>
 
-<!-- JOGO 1 -->
-<div class="market">
-  <h3>Flamengo vence o próximo jogo?</h3>
+<div class="match">
+
+  <div class="teams">
+    <div>Flamengo</div>
+    <div class="score">1 - 0</div>
+    <div>Palmeiras</div>
+  </div>
+
   <div class="odds">
     <div class="odd yes">
-      SIM<br><span id="odd1y">1.80</span>
-      <small>Vol: <span id="vol1y">5200</span></small>
-      <button onclick="apostar(1,'y')">Apostar</button>
+      Flamengo
+      <span id="oddYes">1.85</span>
+      <button>Apostar</button>
     </div>
     <div class="odd no">
-      NÃO<br><span id="odd1n">2.10</span>
-      <small>Vol: <span id="vol1n">4100</span></small>
-      <button onclick="apostar(1,'n')">Apostar</button>
+      Palmeiras
+      <span id="oddNo">2.10</span>
+      <button>Apostar</button>
     </div>
   </div>
-</div>
 
-<!-- JOGO 2 -->
-<div class="market">
-  <h3>Brasil ganha a próxima partida?</h3>
-  <div class="odds">
-    <div class="odd yes">
-      SIM<br><span id="odd2y">1.65</span>
-      <small>Vol: <span id="vol2y">6100</span></small>
-      <button onclick="apostar(2,'y')">Apostar</button>
-    </div>
-    <div class="odd no">
-      NÃO<br><span id="odd2n">2.40</span>
-      <small>Vol: <span id="vol2n">3000</span></small>
-      <button onclick="apostar(2,'n')">Apostar</button>
-    </div>
-  </div>
-</div>
+  <canvas id="chart" width="320" height="160"></canvas>
 
-<!-- ECONOMIA -->
-<div class="market">
-  <h3>Selic acima de 11% até dezembro?</h3>
-  <div class="odds">
-    <div class="odd yes">
-      SIM<br><span id="odd3y">1.95</span>
-      <small>Vol: <span id="vol3y">4800</span></small>
-      <button onclick="apostar(3,'y')">Apostar</button>
-    </div>
-    <div class="odd no">
-      NÃO<br><span id="odd3n">1.90</span>
-      <small>Vol: <span id="vol3n">5000</span></small>
-      <button onclick="apostar(3,'n')">Apostar</button>
-    </div>
-  </div>
-</div>
-
-<div class="history">
-  <strong>Histórico</strong>
-  <div id="history">Nenhuma aposta ainda</div>
 </div>
 
 </main>
 </div>
 
-<footer>
-Simulação realista • Estrutura de casa de apostas
-</footer>
-
 <script>
-let saldo = 1000;
-let history = [];
-let markets = {
-  1:{y:5200,n:4100},
-  2:{y:6100,n:3000},
-  3:{y:4800,n:5000}
-};
+const canvas = document.getElementById("chart");
+const ctx = canvas.getContext("2d");
 
-function apostar(id,side){
-  if(saldo < 50) return alert("Saldo insuficiente");
-  saldo -= 50;
-  markets[id][side] += 50;
-  history.unshift(`Aposta no mercado ${id} • ${side==="y"?"SIM":"NÃO"} • 50 pts`);
-  atualizar();
+let oddYes = 1.85;
+let oddNo = 2.10;
+let dataYes = [];
+let dataNo = [];
+
+function drawChart() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.strokeStyle = "#1d4ed8";
+  ctx.beginPath();
+  dataYes.forEach((v,i)=>{
+    let x = i * (canvas.width / 20);
+    let y = canvas.height - (v-1) * 60;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  ctx.strokeStyle = "#7c2d12";
+  ctx.beginPath();
+  dataNo.forEach((v,i)=>{
+    let x = i * (canvas.width / 20);
+    let y = canvas.height - (v-1) * 60;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
 }
 
-function atualizar(){
-  document.getElementById("saldo").innerText = saldo;
-  document.getElementById("history").innerHTML = history.slice(0,6).join("<br>");
-  for(let i in markets){
-    let t = markets[i].y + markets[i].n;
-    document.getElementById(`odd${i}y`).innerText = (t/markets[i].y).toFixed(2);
-    document.getElementById(`odd${i}n`).innerText = (t/markets[i].n).toFixed(2);
-    document.getElementById(`vol${i}y`).innerText = markets[i].y;
-    document.getElementById(`vol${i}n`).innerText = markets[i].n;
-  }
-}
-
-// simula mercado ao vivo
 setInterval(()=>{
-  let id = Math.ceil(Math.random()*3);
-  Math.random()>0.5 ? markets[id].y+=20 : markets[id].n+=20;
-  atualizar();
-},4000);
+  oddYes += (Math.random()-0.5)*0.05;
+  oddNo += (Math.random()-0.5)*0.05;
+
+  document.getElementById("oddYes").innerText = oddYes.toFixed(2);
+  document.getElementById("oddNo").innerText = oddNo.toFixed(2);
+
+  dataYes.push(oddYes);
+  dataNo.push(oddNo);
+
+  if(dataYes.length > 20){
+    dataYes.shift();
+    dataNo.shift();
+  }
+
+  drawChart();
+},3000);
 </script>
 
 </body>
