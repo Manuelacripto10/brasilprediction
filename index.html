@@ -2,135 +2,178 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Previsão do Brasil • Exchange</title>
+<title>Brasil Predict • Exchange</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1220;color:#e5e7eb}
-header{background:#020617;padding:14px;text-align:center;font-weight:bold}
-.top{display:flex;justify-content:space-between;padding:10px;background:#020617;font-size:14px}
-nav{display:flex;overflow-x:auto;background:#020617}
-nav button{background:none;border:none;color:#cbd5f5;padding:12px;font-size:14px}
-nav button.active{color:#38bdf8;border-bottom:2px solid #38bdf8}
-.container{padding:16px}
-.market{background:#020617;border:1px solid #1e293b;border-radius:12px;padding:16px;margin-bottom:16px}
-.odds{display:flex;gap:10px;margin-top:10px}
-.odd{flex:1;background:#1d4ed8;border-radius:10px;padding:12px;text-align:center;font-size:16px}
-.no{background:#7c2d12}
-.stat{font-size:12px;color:#9ca3af;margin-top:8px}
-footer{text-align:center;font-size:12px;color:#9ca3af;padding:20px}
-.hidden{display:none}
-.login{text-align:center;padding:40px}
-input{padding:12px;width:80%;border-radius:8px;border:none}
-button{cursor:pointer}
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1220;
+  color:#e5e7eb;
+}
+header {
+  background:#020617;
+  padding:14px;
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+}
+.top {
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  background:#020617;
+  font-size:14px;
+}
+nav {
+  display:flex;
+  justify-content:space-around;
+  background:#020617;
+  border-bottom:1px solid #1e293b;
+}
+nav button {
+  background:none;
+  border:none;
+  color:#e5e7eb;
+  padding:12px;
+}
+nav button.active {
+  color:#38bdf8;
+  border-bottom:2px solid #38bdf8;
+}
+.container {
+  padding:14px;
+  max-width:900px;
+  margin:auto;
+}
+.market {
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.market h3 {
+  margin:0 0 10px 0;
+}
+.odds {
+  display:flex;
+  gap:10px;
+}
+.box {
+  flex:1;
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+}
+.yes { background:#1d4ed8; }
+.no { background:#7c2d12; }
+.box button {
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  color:white;
+  font-size:16px;
+  margin-top:8px;
+}
+.stat {
+  font-size:12px;
+  color:#9ca3af;
+  margin-top:6px;
+}
+footer {
+  text-align:center;
+  font-size:12px;
+  color:#9ca3af;
+  padding:20px;
+}
 </style>
 </head>
+
 <body>
 
-<header>📊 Previsão do Brasil • Exchange</header>
-
-<div id="login" class="login">
-<h3>Entrar</h3>
-<input id="userName" placeholder="Seu nome"><br><br>
-<button onclick="login()" style="padding:12px 20px;border-radius:10px">Entrar</button>
-</div>
-
-<div id="app" class="hidden">
+<header>📊 Brasil Predict Exchange</header>
 
 <div class="top">
-<div id="user"></div>
-<div>Saldo: <b><span id="saldo"></span> pts</b></div>
+  <div>Saldo: <strong id="saldo">1000</strong> pts</div>
+  <div>Usuário: Demo</div>
 </div>
 
 <nav>
-<button class="active" onclick="show('sports',this)">⚽ Esportes</button>
-<button onclick="show('economy',this)">📈 Economia</button>
-<button onclick="show('politics',this)">🏛 Política</button>
-<button onclick="show('climate',this)">🌧 Clima</button>
+  <button class="active">⚽ Esportes</button>
+  <button>📈 Economia</button>
+  <button>🏛️ Política</button>
+  <button>🌦️ Clima</button>
 </nav>
 
 <div class="container">
 
-<div id="sports" class="market">
-<h3>Flamengo vence o próximo jogo?</h3>
-<div class="odds">
-<div class="odd" onclick="bet('SIM')">SIM<br><b id="oddSim">1.85</b></div>
-<div class="odd no" onclick="bet('NAO')">NÃO<br><b id="oddNao">2.10</b></div>
-</div>
-<div class="stat">
-Probabilidade implícita: <span id="prob"></span><br>
-Última atualização: <span id="time"></span>
-</div>
-</div>
+  <div class="market">
+    <h3>Flamengo vence o próximo jogo?</h3>
 
-<div id="economy" class="market hidden">
-<h3>Selic acima de 11% até dezembro?</h3>
-<div class="odds">
-<div class="odd">SIM<br><b>1.72</b></div>
-<div class="odd no">NÃO<br><b>2.30</b></div>
-</div>
-</div>
+    <div class="odds">
+      <div class="box yes">
+        <strong>SIM</strong>
+        <div>Odd: <span id="oddYes">1.82</span></div>
+        <button onclick="apostar('yes')">Apostar</button>
+        <div class="stat">Volume: <span id="volYes">5200</span></div>
+      </div>
 
-<div id="politics" class="market hidden">
-<h3>Nova reforma econômica em 2026?</h3>
-<div class="odds">
-<div class="odd">SIM<br><b>2.05</b></div>
-<div class="odd no">NÃO<br><b>1.78</b></div>
-</div>
-</div>
-
-<div id="climate" class="market hidden">
-<h3>Vai chover em São Paulo amanhã?</h3>
-<div class="odds">
-<div class="odd">SIM<br><b>1.60</b></div>
-<div class="odd no">NÃO<br><b>2.50</b></div>
-</div>
-</div>
+      <div class="box no">
+        <strong>NÃO</strong>
+        <div>Odd: <span id="oddNo">2.10</span></div>
+        <button onclick="apostar('no')">Apostar</button>
+        <div class="stat">Volume: <span id="volNo">4100</span></div>
+      </div>
+    </div>
+  </div>
 
 </div>
-</div>
 
-<footer>Demo educacional • Odds simuladas • Sem dinheiro real</footer>
+<footer>
+Simulação educacional • Exchange de previsão • MVP realista
+</footer>
 
 <script>
-let saldo=1000;
-let oddSim=1.85;
-let oddNao=2.10;
+let saldo = 1000;
+let oddYes = 1.82;
+let oddNo = 2.10;
+let volYes = 5200;
+let volNo = 4100;
 
-function login(){
-const name=document.getElementById('userName').value.trim();
-if(!name)return alert('Digite seu nome');
-document.getElementById('login').classList.add('hidden');
-document.getElementById('app').classList.remove('hidden');
-document.getElementById('user').innerText=name;
-document.getElementById('saldo').innerText=saldo;
+function apostar(tipo) {
+  if (saldo < 50) return alert("Saldo insuficiente");
+  saldo -= 50;
+  document.getElementById("saldo").innerText = saldo;
+
+  if (tipo === 'yes') volYes += 50;
+  else volNo += 50;
+
+  recalcularOdds();
 }
 
-function bet(tipo){
-if(saldo<10)return alert('Saldo insuficiente');
-saldo-=10;
-document.getElementById('saldo').innerText=saldo;
-alert('Aposta registrada: '+tipo+' (demo)');
+function recalcularOdds() {
+  const total = volYes + volNo;
+  oddYes = (total / volYes).toFixed(2);
+  oddNo = (total / volNo).toFixed(2);
+
+  document.getElementById("oddYes").innerText = oddYes;
+  document.getElementById("oddNo").innerText = oddNo;
+  document.getElementById("volYes").innerText = volYes;
+  document.getElementById("volNo").innerText = volNo;
 }
 
-function show(id,el){
-document.querySelectorAll('.market').forEach(m=>m.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-el.classList.add('active');
-}
-
-// Simulação de odds ao vivo
-setInterval(()=>{
-oddSim+=(Math.random()-0.5)*0.1;
-oddNao=3-oddSim;
-oddSim=Math.max(1.3,Math.min(2.5,oddSim));
-oddNao=Math.max(1.3,Math.min(2.5,oddNao));
-document.getElementById('oddSim').innerText=oddSim.toFixed(2);
-document.getElementById('oddNao').innerText=oddNao.toFixed(2);
-const prob=(1/oddSim*100).toFixed(1);
-document.getElementById('prob').innerText=prob+'%';
-document.getElementById('time').innerText=new Date().toLocaleTimeString();
-},3000);
+// simula mercado ao vivo
+setInterval(() => {
+  const rand = Math.random();
+  if (rand > 0.5) volYes += Math.floor(Math.random()*30);
+  else volNo += Math.floor(Math.random()*30);
+  recalcularOdds();
+}, 4000);
 </script>
 
 </body>
