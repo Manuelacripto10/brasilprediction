@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,7 +9,7 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: Arial, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
     }
@@ -20,6 +21,26 @@
       font-size: 20px;
       font-weight: bold;
       border-bottom: 1px solid #1e293b;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: #020617;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: #e5e7eb;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    nav button.active {
+      color: #38bdf8;
+      border-bottom: 2px solid #38bdf8;
     }
 
     .container {
@@ -38,27 +59,33 @@
 
     .market h3 {
       margin: 0 0 10px 0;
-      font-size: 18px;
     }
 
     .options {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
-    button {
+    button.option {
       flex: 1;
       padding: 12px;
-      background: #1d4ed8;
-      color: #fff;
-      border: none;
       border-radius: 8px;
+      border: none;
       font-size: 16px;
+      background: #1d4ed8;
+      color: white;
     }
 
     button.no {
       background: #7c2d12;
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
     }
 
     footer {
@@ -72,49 +99,71 @@
 
 <body>
 
-  <header>
-    🔮 Previsão do Brasil
-  </header>
+<header>🔮 Previsão do Brasil</header>
 
-  <div class="container">
+<nav>
+  <button class="active" onclick="showSection('esportes', this)">⚽ Esportes</button>
+  <button onclick="showSection('economia', this)">📈 Economia</button>
+  <button onclick="showSection('politica', this)">🏛️ Política</button>
+  <button onclick="showSection('clima', this)">🌧️ Clima</button>
+</nav>
 
+<div class="container">
+
+  <section id="esportes" class="active">
     <div class="market">
-      <h3>⚽ Flamengo vence o próximo jogo?</h3>
+      <h3>Flamengo vence o próximo jogo?</h3>
       <div class="options">
-        <button>SIM (62%)</button>
-        <button class="no">NÃO (38%)</button>
+        <button class="option">SIM 62%</button>
+        <button class="option no">NÃO 38%</button>
       </div>
     </div>
+  </section>
 
+  <section id="economia">
     <div class="market">
-      <h3>📈 Selic acima de 11% até o fim do ano?</h3>
+      <h3>Selic acima de 11% até o fim do ano?</h3>
       <div class="options">
-        <button>SIM (55%)</button>
-        <button class="no">NÃO (45%)</button>
+        <button class="option">SIM 55%</button>
+        <button class="option no">NÃO 45%</button>
       </div>
     </div>
+  </section>
 
+  <section id="politica">
     <div class="market">
-      <h3>🏛️ Governo anuncia nova reforma econômica?</h3>
+      <h3>Nova reforma econômica em 2026?</h3>
       <div class="options">
-        <button>SIM (41%)</button>
-        <button class="no">NÃO (59%)</button>
+        <button class="option">SIM 41%</button>
+        <button class="option no">NÃO 59%</button>
       </div>
     </div>
+  </section>
 
+  <section id="clima">
     <div class="market">
-      <h3>🌧️ Vai chover em São Paulo amanhã?</h3>
+      <h3>Vai chover em São Paulo amanhã?</h3>
       <div class="options">
-        <button>SIM (68%)</button>
-        <button class="no">NÃO (32%)</button>
+        <button class="option">SIM 68%</button>
+        <button class="option no">NÃO 32%</button>
       </div>
     </div>
+  </section>
 
-  </div>
+</div>
 
-  <footer>
-    MVP educacional • Previsões não financeiras • © 2026
-  </footer>
+<footer>
+  MVP educacional • Sem dinheiro real • © 2026
+</footer>
+
+<script>
+  function showSection(id, el) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
