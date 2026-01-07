@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Previsão do Brasil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    header {
+      background: #020617;
+      padding: 16px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .container {
+      padding: 16px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .market {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .market h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+
+    .options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      background: #1d4ed8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button.no {
+      background: #7c2d12;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    🔮 Previsão do Brasil
+  </header>
+
+  <div class="container">
+
+    <div class="market">
+      <h3>⚽ Flamengo vence o próximo jogo?</h3>
+      <div class="options">
+        <button>SIM (62%)</button>
+        <button class="no">NÃO (38%)</button>
+      </div>
+    </div>
+
+    <div class="market">
+      <h3>📈 Selic acima de 11% até o fim do ano?</h3>
+      <div class="options">
+        <button>SIM (55%)</button>
+        <button class="no">NÃO (45%)</button>
+      </div>
+    </div>
+
+    <div class="market">
+      <h3>🏛️ Governo anuncia nova reforma econômica?</h3>
+      <div class="options">
+        <button>SIM (41%)</button>
+        <button class="no">NÃO (59%)</button>
+      </div>
+    </div>
+
+    <div class="market">
+      <h3>🌧️ Vai chover em São Paulo amanhã?</h3>
+      <div class="options">
+        <button>SIM (68%)</button>
+        <button class="no">NÃO (32%)</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    MVP educacional • Previsões não financeiras • © 2026
+  </footer>
+
+</body>
+</html>
