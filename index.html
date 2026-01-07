@@ -6,26 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-    body { margin:0; font-family:Arial; background:#0f172a; color:#e5e7eb; }
+    body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#e5e7eb; }
     header { background:#020617; padding:14px; text-align:center; font-weight:bold; }
-    nav { display:flex; justify-content:space-around; background:#020617; }
-    nav button { background:none; border:none; color:#e5e7eb; padding:12px; }
+
+    .login { padding:30px; text-align:center; }
+    input { padding:12px; width:80%; border-radius:8px; border:none; }
+
+    .top { display:flex; justify-content:space-between; align-items:center; padding:10px; background:#020617; font-size:14px; }
+    .top a { color:#38bdf8; text-decoration:none; margin-left:6px; }
+
+    nav { display:flex; justify-content:space-around; background:#020617; border-bottom:1px solid #1e293b; }
+    nav button { background:none; border:none; color:#e5e7eb; padding:12px; font-size:14px; }
     nav button.active { color:#38bdf8; border-bottom:2px solid #38bdf8; }
 
     .container { padding:16px; max-width:900px; margin:auto; }
-    .market { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:14px; margin-bottom:14px; }
+
+    .market { background:#020617; border:1px solid #1e293b; border-radius:12px; padding:16px; margin-bottom:16px; }
+    .market h3 { margin:0 0 12px 0; }
+
     .options { display:flex; gap:10px; }
-    .option { flex:1; padding:10px; border:none; border-radius:8px; font-size:15px; color:white; background:#1d4ed8; }
+    .option {
+      flex:1; padding:12px; border:none; border-radius:10px;
+      font-size:16px; color:white; background:#1d4ed8;
+    }
     .no { background:#7c2d12; }
 
     section { display:none; }
     section.active { display:block; }
 
-    .top { display:flex; justify-content:space-between; font-size:14px; padding:8px; background:#020617; }
-    footer { text-align:center; font-size:12px; color:#9ca3af; padding:16px; }
-
-    .login { padding:20px; text-align:center; }
-    input { padding:10px; width:80%; border-radius:6px; border:none; }
+    footer { text-align:center; font-size:12px; color:#9ca3af; padding:20px; }
   </style>
 </head>
 
@@ -33,6 +42,7 @@
 
 <header>🔮 Previsão do Brasil</header>
 
+<!-- LOGIN -->
 <div id="login" class="login">
   <h3>Entrar</h3>
   <input id="username" placeholder="Digite seu nome">
@@ -40,18 +50,22 @@
   <button class="option" onclick="login()">Entrar</button>
 </div>
 
+<!-- APP -->
 <div id="app" style="display:none">
 
   <div class="top">
     <div id="user"></div>
-    <div>Saldo: <span id="saldo"></span> pts</div>
+    <div>
+      Saldo: <span id="saldo"></span> pts
+      • <a href="#" onclick="logout()">Sair</a>
+    </div>
   </div>
 
   <nav>
-    <button class="active" onclick="show('esportes',this)">⚽</button>
-    <button onclick="show('economia',this)">📈</button>
-    <button onclick="show('politica',this)">🏛️</button>
-    <button onclick="show('clima',this)">🌧️</button>
+    <button class="active" onclick="showSection('esportes', this)">⚽ Esportes</button>
+    <button onclick="showSection('economia', this)">📈 Economia</button>
+    <button onclick="showSection('politica', this)">🏛️ Política</button>
+    <button onclick="showSection('clima', this)">🌧️ Clima</button>
   </nav>
 
   <div class="container">
@@ -68,7 +82,7 @@
 
     <section id="economia">
       <div class="market">
-        <h3>Selic acima de 11%?</h3>
+        <h3>Selic acima de 11% até o fim do ano?</h3>
         <div class="options">
           <button class="option" onclick="apostar()">SIM</button>
           <button class="option no" onclick="apostar()">NÃO</button>
@@ -88,7 +102,7 @@
 
     <section id="clima">
       <div class="market">
-        <h3>Vai chover amanhã em SP?</h3>
+        <h3>Vai chover em São Paulo amanhã?</h3>
         <div class="options">
           <button class="option" onclick="apostar()">SIM</button>
           <button class="option no" onclick="apostar()">NÃO</button>
@@ -97,25 +111,24 @@
     </section>
 
   </div>
-
 </div>
 
 <footer>
-  Simulador educacional • Pontos virtuais • Sem dinheiro real
+  MVP educacional • Pontos virtuais • Sem dinheiro real • © 2026
 </footer>
 
 <script>
-  let saldo = localStorage.getItem('saldo') || 1000;
+  const SALDO_INICIAL = 1000;
 
   function login() {
-    const nome = document.getElementById('username').value;
-    if(!nome) return alert("Digite um nome");
+    const nome = document.getElementById('username').value.trim();
+    if (!nome) return alert("Digite seu nome");
     localStorage.setItem('user', nome);
-    localStorage.setItem('saldo', saldo);
-    start();
+    localStorage.setItem('saldo', SALDO_INICIAL);
+    iniciar();
   }
 
-  function start() {
+  function iniciar() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     document.getElementById('user').innerText = localStorage.getItem('user');
@@ -123,21 +136,27 @@
   }
 
   function apostar() {
-    let s = parseInt(localStorage.getItem('saldo'));
-    if(s < 10) return alert("Saldo insuficiente");
-    s -= 10;
-    localStorage.setItem('saldo', s);
-    document.getElementById('saldo').innerText = s;
+    let saldo = parseInt(localStorage.getItem('saldo'));
+    if (saldo < 10) return alert("Saldo insuficiente");
+    saldo -= 10;
+    localStorage.setItem('saldo', saldo);
+    document.getElementById('saldo').innerText = saldo;
   }
 
-  function show(id, el) {
+  function logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('saldo');
+    location.reload();
+  }
+
+  function showSection(id, el) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
   }
 
-  if(localStorage.getItem('user')) start();
+  if (localStorage.getItem('user')) iniciar();
 </script>
 
 </body>
