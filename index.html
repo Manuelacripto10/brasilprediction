@@ -2,51 +2,70 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Brasil Predict • Exchange</title>
+<title>Brasil Predict | Ao Vivo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+* { box-sizing:border-box; }
+
 body {
   margin:0;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   background:#0b1220;
   color:#e5e7eb;
 }
+
 header {
   background:#020617;
-  padding:14px;
-  text-align:center;
-  font-weight:bold;
+  padding:14px 16px;
   font-size:18px;
-}
-.top {
-  display:flex;
-  justify-content:space-between;
-  padding:10px;
-  background:#020617;
-  font-size:14px;
-}
-nav {
-  display:flex;
-  justify-content:space-around;
-  background:#020617;
+  font-weight:600;
   border-bottom:1px solid #1e293b;
 }
-nav button {
+
+.app { display:flex; }
+
+/* SIDEBAR */
+aside {
+  width:220px;
+  background:#020617;
+  border-right:1px solid #1e293b;
+  min-height:100vh;
+}
+aside h4 {
+  padding:14px;
+  margin:0;
+  font-size:13px;
+  color:#9ca3af;
+}
+aside button {
+  width:100%;
+  padding:12px 16px;
   background:none;
   border:none;
   color:#e5e7eb;
-  padding:12px;
+  text-align:left;
+  font-size:14px;
 }
-nav button.active {
-  color:#38bdf8;
-  border-bottom:2px solid #38bdf8;
+aside button.active { color:#38bdf8; }
+
+/* MAIN */
+main { flex:1; padding:16px; }
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:16px;
+  font-size:14px;
 }
-.container {
-  padding:14px;
-  max-width:900px;
-  margin:auto;
+
+.balance {
+  background:#020617;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #1e293b;
 }
+
 .market {
   background:#020617;
   border:1px solid #1e293b;
@@ -54,126 +73,183 @@ nav button.active {
   padding:16px;
   margin-bottom:16px;
 }
+
 .market h3 {
-  margin:0 0 10px 0;
+  margin:0 0 12px 0;
+  font-size:15px;
 }
+
 .odds {
-  display:flex;
-  gap:10px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
 }
-.box {
-  flex:1;
-  background:#020617;
-  border:1px solid #1e293b;
-  border-radius:12px;
+
+.odd {
   padding:12px;
+  border-radius:12px;
   text-align:center;
+  border:1px solid #1e293b;
 }
 .yes { background:#1d4ed8; }
 .no { background:#7c2d12; }
-.box button {
+
+.odd span {
+  font-size:18px;
+  font-weight:bold;
+}
+
+.odd small {
+  display:block;
+  font-size:11px;
+  margin-top:4px;
+}
+
+.odd button {
+  margin-top:8px;
   width:100%;
-  padding:10px;
+  padding:8px;
   border:none;
   border-radius:10px;
-  color:white;
-  font-size:16px;
-  margin-top:8px;
+  font-size:13px;
+  font-weight:600;
 }
-.stat {
-  font-size:12px;
-  color:#9ca3af;
-  margin-top:6px;
+
+.history {
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:14px;
+  padding:14px;
+  font-size:13px;
 }
+
 footer {
   text-align:center;
+  padding:20px;
   font-size:12px;
   color:#9ca3af;
-  padding:20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>📊 Brasil Predict Exchange</header>
+<header>📊 Brasil Predict — Mercados Ao Vivo</header>
 
-<div class="top">
-  <div>Saldo: <strong id="saldo">1000</strong> pts</div>
-  <div>Usuário: Demo</div>
-</div>
+<div class="app">
 
-<nav>
+<aside>
+  <h4>Mercados</h4>
   <button class="active">⚽ Esportes</button>
   <button>📈 Economia</button>
   <button>🏛️ Política</button>
-  <button>🌦️ Clima</button>
-</nav>
+</aside>
 
-<div class="container">
+<main>
 
-  <div class="market">
-    <h3>Flamengo vence o próximo jogo?</h3>
+<div class="topbar">
+  <div class="balance">Saldo: <strong id="saldo">1000</strong> pts</div>
+  <div>Usuário: Demo</div>
+</div>
 
-    <div class="odds">
-      <div class="box yes">
-        <strong>SIM</strong>
-        <div>Odd: <span id="oddYes">1.82</span></div>
-        <button onclick="apostar('yes')">Apostar</button>
-        <div class="stat">Volume: <span id="volYes">5200</span></div>
-      </div>
-
-      <div class="box no">
-        <strong>NÃO</strong>
-        <div>Odd: <span id="oddNo">2.10</span></div>
-        <button onclick="apostar('no')">Apostar</button>
-        <div class="stat">Volume: <span id="volNo">4100</span></div>
-      </div>
+<!-- JOGO 1 -->
+<div class="market">
+  <h3>Flamengo vence o próximo jogo?</h3>
+  <div class="odds">
+    <div class="odd yes">
+      SIM<br><span id="odd1y">1.80</span>
+      <small>Vol: <span id="vol1y">5200</span></small>
+      <button onclick="apostar(1,'y')">Apostar</button>
+    </div>
+    <div class="odd no">
+      NÃO<br><span id="odd1n">2.10</span>
+      <small>Vol: <span id="vol1n">4100</span></small>
+      <button onclick="apostar(1,'n')">Apostar</button>
     </div>
   </div>
+</div>
 
+<!-- JOGO 2 -->
+<div class="market">
+  <h3>Brasil ganha a próxima partida?</h3>
+  <div class="odds">
+    <div class="odd yes">
+      SIM<br><span id="odd2y">1.65</span>
+      <small>Vol: <span id="vol2y">6100</span></small>
+      <button onclick="apostar(2,'y')">Apostar</button>
+    </div>
+    <div class="odd no">
+      NÃO<br><span id="odd2n">2.40</span>
+      <small>Vol: <span id="vol2n">3000</span></small>
+      <button onclick="apostar(2,'n')">Apostar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ECONOMIA -->
+<div class="market">
+  <h3>Selic acima de 11% até dezembro?</h3>
+  <div class="odds">
+    <div class="odd yes">
+      SIM<br><span id="odd3y">1.95</span>
+      <small>Vol: <span id="vol3y">4800</span></small>
+      <button onclick="apostar(3,'y')">Apostar</button>
+    </div>
+    <div class="odd no">
+      NÃO<br><span id="odd3n">1.90</span>
+      <small>Vol: <span id="vol3n">5000</span></small>
+      <button onclick="apostar(3,'n')">Apostar</button>
+    </div>
+  </div>
+</div>
+
+<div class="history">
+  <strong>Histórico</strong>
+  <div id="history">Nenhuma aposta ainda</div>
+</div>
+
+</main>
 </div>
 
 <footer>
-Simulação educacional • Exchange de previsão • MVP realista
+Simulação realista • Estrutura de casa de apostas
 </footer>
 
 <script>
 let saldo = 1000;
-let oddYes = 1.82;
-let oddNo = 2.10;
-let volYes = 5200;
-let volNo = 4100;
+let history = [];
+let markets = {
+  1:{y:5200,n:4100},
+  2:{y:6100,n:3000},
+  3:{y:4800,n:5000}
+};
 
-function apostar(tipo) {
-  if (saldo < 50) return alert("Saldo insuficiente");
+function apostar(id,side){
+  if(saldo < 50) return alert("Saldo insuficiente");
   saldo -= 50;
-  document.getElementById("saldo").innerText = saldo;
-
-  if (tipo === 'yes') volYes += 50;
-  else volNo += 50;
-
-  recalcularOdds();
+  markets[id][side] += 50;
+  history.unshift(`Aposta no mercado ${id} • ${side==="y"?"SIM":"NÃO"} • 50 pts`);
+  atualizar();
 }
 
-function recalcularOdds() {
-  const total = volYes + volNo;
-  oddYes = (total / volYes).toFixed(2);
-  oddNo = (total / volNo).toFixed(2);
-
-  document.getElementById("oddYes").innerText = oddYes;
-  document.getElementById("oddNo").innerText = oddNo;
-  document.getElementById("volYes").innerText = volYes;
-  document.getElementById("volNo").innerText = volNo;
+function atualizar(){
+  document.getElementById("saldo").innerText = saldo;
+  document.getElementById("history").innerHTML = history.slice(0,6).join("<br>");
+  for(let i in markets){
+    let t = markets[i].y + markets[i].n;
+    document.getElementById(`odd${i}y`).innerText = (t/markets[i].y).toFixed(2);
+    document.getElementById(`odd${i}n`).innerText = (t/markets[i].n).toFixed(2);
+    document.getElementById(`vol${i}y`).innerText = markets[i].y;
+    document.getElementById(`vol${i}n`).innerText = markets[i].n;
+  }
 }
 
 // simula mercado ao vivo
-setInterval(() => {
-  const rand = Math.random();
-  if (rand > 0.5) volYes += Math.floor(Math.random()*30);
-  else volNo += Math.floor(Math.random()*30);
-  recalcularOdds();
-}, 4000);
+setInterval(()=>{
+  let id = Math.ceil(Math.random()*3);
+  Math.random()>0.5 ? markets[id].y+=20 : markets[id].n+=20;
+  atualizar();
+},4000);
 </script>
 
 </body>
